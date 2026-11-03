@@ -1,6 +1,6 @@
 # PIXEL LENORMAND icons
 
-Standalone icon artwork inspired by the star card (No. 16) in
+Standalone icon artwork inspired by the lily card (No. 30) in
 `../lenormand_sprites.png`, using forest green, antique gold and cream.
 The source was generated with the existing sprite sheet as a reference.
 
