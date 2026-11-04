@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v1.1</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v1.2</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <style>
@@ -133,42 +133,43 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
  #guide .card .en{font-size:9px}
 }
 </style></head><body>
-<header><div><h1>PIXEL LENORMAND <small class="version">v1.1</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
-<main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface"><h2>ルノルマンの読み方</h2><p>質問の決め方から、1〜3枚引きの読み方まで。例のカードをタップすると、図鑑と同じ詳しい意味を確認できます。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#library">36枚の意味を調べる</a></div></div>
+<header><div><h1>PIXEL LENORMAND <small class="version">v1.2</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
+<main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface"><h2>ルノルマンの読み方</h2><p>まず絵を眺め、質問と重ねて読んでみましょう。基本の意味を確認したいときは、例のカードをタップすると詳しい説明を読めます。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#library">36枚の意味を調べる</a></div></div>
 <section class="panel" id="guide-basics">
 <h2>まずは、質問をひとつ決める</h2>
-<p>ルノルマンは、知らせを表す「騎士」、約束を表す「指輪」のように、絵柄を具体的な言葉に置き換えて読むカードです。複数枚なら、その言葉同士をつなげます。タロットとは別の体系で、ここでは正位置・逆位置を分けずに読みます。</p>
-<ol><li><strong>テーマと期間を絞る。</strong>「これからどうなる？」より「今週、新しい仕事に慣れるために意識したいことは？」のように尋ねます。</li><li><strong>枚数と読む順番を先に決める。</strong>まずは1枚、慣れたら2枚・3枚へ。引いてから都合よく役割を変えないようにします。</li><li><strong>カードを引き、まず絵を見る。</strong>占う画面では「1枚目」から順に読みます。キーワードを見る前に、何を連想したか一言メモしてもよいでしょう。</li><li><strong>言葉をつなげ、行動をひとつ選ぶ。</strong>「カード → 読み方 → 今日できること」の順に記録すると、あとで振り返りやすくなります。</li></ol>
+<p>ルノルマンは、山や手紙、指輪など、身近なモチーフを使う36枚のカードです。それぞれに受け継がれてきた基本の意味がありますが、まずは何が描かれているかを眺めてみましょう。複数枚なら、並んだ絵のつながりや対比にも目を向けます。タロットとは別の体系で、ここでは正位置・逆位置を分けずに読みます。</p>
+<ol><li><strong>テーマ・期間・枚数を決める。</strong>「今週、新しい仕事に慣れるために意識したいことは？」のように尋ねます。枚数や各カードの役割も引く前に決めます。</li><li><strong>まず、絵を見る。</strong>キーワードを開く前に、何が描かれていて、どんな様子に見えるかを眺めます。目に留まった形や、感じたことを一言メモしてみましょう。</li><li><strong>質問に重ねる。</strong>このモチーフは、今の自分の状況の何に当たりそうでしょうか。複数枚なら、出た順に絵を眺め、つながり・対比・流れを探します。</li><li><strong>基本の意味と照らし合わせる。</strong>キーワードや図鑑を開き、自分の読みと比べます。思い付かなかった見方を足したり、質問から離れすぎていないか確かめたりします。</li><li><strong>行動をひとつ選ぶ。</strong>浮かんだ読みを、今日できる小さな行動へつなげます。「見えたもの → 連想したこと → 読み → 試すこと」を残すと、あとで振り返れます。</li></ol>
+<p class="note">絵に実際に描かれているものと、自分がそこから連想したことは分けて考えましょう。連想も読みの手掛かりですが、描かれていないものを絵の事実として扱う必要はありません。</p>
 <p class="note">以下は固定のカードを使った読み方の一例です。意味や組み合わせには流派差があり、ひとつの正解に固定する必要はありません。同じ質問を引き直し続けるより、最初の読みと実際の出来事を比べてみましょう。</p>
 </section>
 <section class="panel" id="guide-one-card">
 <h2>1枚引き：ひとつのテーマに注目する</h2>
-<p>今日の心掛けや、状況の中心を短く知りたいときに。質問を決めて1枚引き、絵柄の意味をその質問に当てはめます。</p>
+<p>今日の心掛けや、状況の中心を短く知りたいときに。1枚引いたら、名前や意味を急いで調べず、まず絵のどこに目が留まるかを確かめます。</p>
 <p class="question">質問例「今日を気持ちよく過ごすために、意識したいことは？」</p>
 <div class="spread single" style="--count:1"><figure class="example-card"><figcaption>1枚目：今日のヒント</figcaption><div data-example-card="2"></div></figure></div>
-<div class="reading"><p><strong>クローバー → 小さな幸運・機会。</strong><br>「大きな成果を求めすぎず、身近な楽しさや小さな機会を拾ってみよう」と読めます。</p><p><strong>行動の例：</strong>気になる誘いに返事をする、短い休憩で好きなお茶を飲むなど、小さく試せることをひとつ。</p></div>
+<div class="reading"><p><strong>まず絵を見る：</strong>クローバーの葉が描かれています。たとえば「散歩の途中で見つけたら、少しうれしいかも」と感じたとします。これは絵から浮かんだ自分の連想です。</p><p><strong>質問に重ねる：</strong>「今日も、身近にある小さな楽しさに目を向けてみよう」と読めそうです。</p><p><strong>基本の意味と照らす：</strong>クローバーの「小さな幸運・機会」とも重なります。「機会」という見方を足すなら、気になる誘いに返事をしてみるのもひとつです。</p><p><strong>行動の例：</strong>短い休憩で好きなお茶を飲むなど、今日の小さな楽しみをひとつ選びます。</p></div>
 <p class="note">1枚だけで人生全体の結論を出そうとせず、質問の範囲でひとつのヒントを受け取ります。</p>
 </section>
 <section class="panel" id="guide-two-cards">
-<h2>2枚引き：ふたつの言葉をつなぐ</h2>
-<p>ここでは、1枚目を「中心の話題」、2枚目を「その話題を説明する言葉」と決めます。「何について、どんな状態？」と短い一文にする練習です。</p>
+<h2>2枚引き：並んだ絵の関係を見る</h2>
+<p>ここでは、1枚目を「中心の話題」、2枚目を「その話題に重ねる絵」と決めます。それぞれを眺めてから、「このふたつは、どんな場面でつながりそう？」と考えます。似ている点や違う点に目を向けても構いません。</p>
 <p class="question">質問例「今週、仕事のやり取りで気を付けたいことは？」</p>
-<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目：中心の話題</figcaption><div data-example-card="27"></div></figure><figure class="example-card"><figcaption>2枚目：説明する言葉</figcaption><div data-example-card="25"></div></figure></div>
-<div class="reading"><p><strong>手紙（文書・連絡）＋ 指輪（約束・契約）。</strong><br>「約束に関する連絡」「合意を文書に残すこと」がテーマ、と読めます。</p><p><strong>行動の例：</strong>口頭で決めた締め切りや担当範囲を、メールで確認する。契約が必ず成立するという予言ではなく、確認したい点を具体化します。</p></div>
-<p>順番を反対にすると、「指輪＝約束」を中心に「手紙＝文書で交わす」と説明する読みになります。意味が重なる組み合わせもありますが、毎回、先に決めた順番で読みましょう。</p>
-<details><summary>うまくつながらないときは？</summary><p>それぞれのキーワードをひとつずつ選び、「〜についての〜」「〜による〜」とつないでみます。たとえば「犬＋手紙」なら「友人からの連絡」。質問に合わない解釈を無理に足さず、複数の候補をメモしておいても構いません。</p></details>
+<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目：中心の話題</figcaption><div data-example-card="27"></div></figure><figure class="example-card"><figcaption>2枚目：重ねる絵</figcaption><div data-example-card="25"></div></figure></div>
+<div class="reading"><p><strong>まず絵を見る：</strong>手紙と、輪になった指輪が並んでいます。「何が書かれた手紙だろう」「指輪と一緒なら、誰かとの約束の知らせだろうか」と、ふたつから浮かぶ場面を探します。</p><p><strong>質問に重ねる：</strong>仕事のやり取りについて尋ねているので、「誰かと決めたことを、連絡で確かめる場面」が思い浮かびます。</p><p><strong>基本の意味と照らす：</strong>手紙の「文書・連絡」、指輪の「約束・契約」を参考にすると、「合意を文書に残す」という読みができます。</p><p><strong>行動の例：</strong>口頭で決めた締め切りや担当範囲を、メールで確認する。契約が必ず成立すると決めるのではなく、自分が確認できることへつなげます。</p></div>
+<p>順番を反対にすると、まず指輪に注目し、そこへ手紙を重ねることになります。同じ場面が浮かぶ場合もありますが、どちらを中心に眺めたかを意識して、先に決めた順番で読みましょう。</p>
+<details><summary>うまくつながらないときは？</summary><p>それぞれの絵を別々に眺めてから、同じ場面にあったらどうなるか想像してみます。たとえば犬と手紙から、親しい誰かが届けてくれる便りを連想するかもしれません。浮かばなければ図鑑の基本の意味を足掛かりにしても大丈夫です。無理に話を作らず、いくつかの候補をメモしておきましょう。</p></details>
 </section>
 <section class="panel" id="guide-three-cards">
 <h2>3枚引き：状況から行動へ、流れを読む</h2>
-<p>ここでは引く前に、1枚目を「現状」、2枚目を「取り組むヒント」、3枚目を「その先の見通し」と決めます。最後のカードも確定した未来ではなく、現在の状況から考える見通しとして扱います。</p>
+<p>ここでは引く前に、1枚目を「現状」、2枚目を「取り組むヒント」、3枚目を「その先の見通し」と決めます。まず3枚の絵を順に眺め、どんな流れに見えるかを考えてから、それぞれの役割と質問に重ねます。最後のカードも確定した未来ではなく、現在の状況から考える見通しとして扱います。</p>
 <p class="question">質問例「今週、止まっている作業を進めるには？」</p>
 <div class="spread" style="--count:3"><figure class="example-card"><figcaption>1枚目：現状</figcaption><div data-example-card="21"></div></figure><figure class="example-card"><figcaption>2枚目：ヒント</figcaption><div data-example-card="33"></div></figure><figure class="example-card"><figcaption>3枚目：見通し</figcaption><div data-example-card="31"></div></figure></div>
-<div class="reading"><p><strong>① 山：現状。</strong>作業の前に壁があり、進めにくい状態。</p><p><strong>② 鍵：取り組むヒント。</strong>全部を一度に解決しようとせず、詰まりの核心をひとつ見つける。</p><p><strong>③ 太陽：その先の見通し。</strong>核心に手を付けることで、進捗が見え、明るさや手応えを得られる可能性。</p><p><strong>ひとつの文章にすると：</strong>「壁になっている点を絞って解決すれば、作業の見通しが明るくなりそう」。まず不足している情報を書き出し、分かる人にひとつ質問してみます。</p></div>
+<div class="reading"><p><strong>まず絵の並びを見る：</strong>山、鍵、太陽が並んでいます。「行く手に山があるようだ。この鍵は何を開けるのだろう。その先には明るい太陽がある」と、ひとつの場面を想像してみます。行く手や開ける場所は、絵から加えた連想です。</p><p><strong>質問と役割に重ねる：</strong>現状の山は、作業で越えたい難所。ヒントの鍵は「いま、何が分かれば進めるだろう？」という問い。その先の太陽は、作業の見通しが明るくなるイメージ、と読めそうです。</p><p><strong>基本の意味と照らす：</strong>山の「障害・停滞」、鍵の「解決・重要性」、太陽の「活力・明るさ」も参考になります。全部を一度に片付けるより、進むために大切な一点を見つける読みにつながります。</p><p><strong>行動の例：</strong>「何が分からなくて止まっているか」を書き出し、分かる人にひとつ質問してみます。</p></div>
 <details><summary>別の並べ方：「過去・現在・未来」</summary><p>1枚目＝過去、2枚目＝現在、3枚目＝未来という方法もあります。たとえば「船 → 庭園 → 錨」なら、「これまでの移動や挑戦を経て、今は人との交流があり、その先では居場所を定めていく」という読み方ができます。どの並べ方でも、役割は引く前に決めます。</p></details>
 <details><summary>役割を付けず、3枚をひとつの文章にする</summary><p>組み合わせに慣れたら、3枚を左から順に読む方法も試せます。「犬 → 手紙 → 指輪」なら「友人からの連絡が、約束につながる」といった読みです。最初の練習では、役割を決めた読み方と混ぜず、どちらで読むか先に選びましょう。</p></details>
 </section>
 
-<section class="panel"><h2>読んだら、ひとつ試して振り返る</h2><p>日付・質問・出た順番・自分の読み・試したことを短く残しておきましょう。あとで「実際はどうだったか」を足すと、自分にとってのカードの言葉が育っていきます。</p><p class="note">カードは考えを整理する手掛かりです。相手の気持ちや未来を事実として断定せず、実際の会話や情報も大切にしてください。</p><a class="back" href="#draw">占う画面で試す</a></section>
+<section class="panel"><h2>読んだら、ひとつ試して振り返る</h2><p>日付・質問・出た順番と、絵を見て気付いたこと・自分の読み・試したことを短く残しておきましょう。あとで「実際はどうだったか」を足すと、自分にとってのカードの言葉が育っていきます。</p><p class="note">カードは考えを整理する手掛かりです。相手の気持ちや未来を事実として断定せず、実際の会話や情報も大切にしてください。</p><a class="back" href="#draw">占う画面で試す</a></section>
 </section></main><dialog id="card-dialog" aria-labelledby="detail-title"><form method="dialog"><button aria-label="閉じる">閉じる</button></form><h2 id="detail-title"></h2><div id="detail-card"></div><p id="detail-meaning"></p><p id="detail-explanation"></p></dialog>
 <script>
 const rows=[
