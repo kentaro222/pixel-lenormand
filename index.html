@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v0.15</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v0.16</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <style>
@@ -92,8 +92,10 @@ body:has(#card-dialog[open]){overflow:hidden}
 #drawn:not(.spread) .card{width:100%;min-height:250px;aspect-ratio:auto;padding:12px 10px;gap:6px}
 #drawn:not(.spread) .sprite{width:128px;height:128px;background-size:768px 768px;background-position:calc(var(--col) * -128px) calc(var(--row) * -128px)}
 #drawn:not(.spread) .en{max-width:100%;overflow-wrap:anywhere;line-height:1.4}
+.guide-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid transparent;border-radius:8px;color:var(--text);font-size:14px;text-decoration:none}.guide-link:hover{background:#e1e6d8;border-color:#8a9b7c}.guide-link:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+@media(max-width:600px){nav .guide-link{flex:1}}
 </style></head><body>
-<header><div><h1>PIXEL LENORMAND <small class="version">v0.15</small></h1></div><nav><button class="active" data-tab="draw">占う</button><button data-tab="library">カード図鑑</button></nav></header>
+<header><div><h1>PIXEL LENORMAND <small class="version">v0.16</small></h1></div><nav><button class="active" data-tab="draw">占う</button><button data-tab="library">カード図鑑</button><a class="guide-link" href="./guide.html">占い方</a></nav></header>
 <main><section id="draw" class="screen active" aria-label="占う"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" aria-label="カード図鑑"><div class="surface"><div id="grid" class="grid"></div></div></section></main><dialog id="card-dialog" aria-labelledby="detail-title"><form method="dialog"><button aria-label="閉じる">閉じる</button></form><h2 id="detail-title"></h2><div id="detail-card"></div><p id="detail-meaning"></p></dialog>
 <script>
 const rows=[
