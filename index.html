@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v1.0</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v1.1</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <style>
@@ -133,7 +133,7 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
  #guide .card .en{font-size:9px}
 }
 </style></head><body>
-<header><div><h1>PIXEL LENORMAND <small class="version">v1.0</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
+<header><div><h1>PIXEL LENORMAND <small class="version">v1.1</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
 <main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface"><h2>ルノルマンの読み方</h2><p>質問の決め方から、1〜3枚引きの読み方まで。例のカードをタップすると、図鑑と同じ詳しい意味を確認できます。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#library">36枚の意味を調べる</a></div></div>
 <section class="panel" id="guide-basics">
 <h2>まずは、質問をひとつ決める</h2>
@@ -439,8 +439,47 @@ function selectDrawCount(n){
   button.setAttribute('aria-pressed',String(selected));
  });
 }
-function draw(n){selectDrawCount(n);let ids=rows.map(c=>c.id);for(let i=ids.length-1;i>0;i--){const arr=new Uint32Array(1);crypto.getRandomValues(arr);const j=arr[0]%(i+1);[ids[i],ids[j]]=[ids[j],ids[i]]}let chosen=ids.slice(0,n).map(byId);drawn.classList.toggle('spread',n>1);drawn.style.setProperty('--draw-count',n);drawn.innerHTML=chosen.map((c,i)=>`<div class="draw-slot" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');keywords.innerHTML='<details class="interpret"><summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>'+chosen.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('')+'</details>'}
-document.getElementById('one').onclick=()=>draw(1);document.getElementById('two').onclick=()=>draw(2);document.getElementById('three').onclick=()=>draw(3);document.getElementById('reset').onclick=()=>{selectDrawCount(null);keywords.innerHTML='';drawn.classList.remove('spread');drawn.innerHTML='<div class="muted">カードを引くボタンを押してください</div>'};
+const lastDrawKey='pixel-lenormand:last-draw';
+function renderDraw(chosen){
+ const n=chosen.length;
+ selectDrawCount(n);
+ drawn.classList.toggle('spread',n>1);
+ drawn.style.setProperty('--draw-count',n);
+ drawn.innerHTML=chosen.map((c,i)=>`<div class="draw-slot" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');
+ keywords.innerHTML='<details class="interpret"><summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>'+chosen.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('')+'</details>';
+}
+function draw(n){
+ const ids=rows.map(c=>c.id);
+ for(let i=ids.length-1;i>0;i--){
+  const arr=new Uint32Array(1);crypto.getRandomValues(arr);
+  const j=arr[0]%(i+1);[ids[i],ids[j]]=[ids[j],ids[i]];
+ }
+ const cardIds=ids.slice(0,n);
+ renderDraw(cardIds.map(byId));
+ // Storage may be unavailable or full; drawing must still work.
+ try{localStorage.setItem(lastDrawKey,JSON.stringify({version:1,cardIds}));}catch{}
+}
+function restoreLastDraw(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(lastDrawKey));
+  if(saved?.version!==1 || !Array.isArray(saved.cardIds))return;
+  const ids=saved.cardIds;
+  if(ids.length<1 || ids.length>3 || new Set(ids).size!==ids.length)return;
+  if(!ids.every(id=>Number.isInteger(id) && byId(id)))return;
+  renderDraw(ids.map(byId));
+ }catch{}
+}
+document.getElementById('one').onclick=()=>draw(1);
+document.getElementById('two').onclick=()=>draw(2);
+document.getElementById('three').onclick=()=>draw(3);
+document.getElementById('reset').onclick=()=>{
+ selectDrawCount(null);
+ keywords.innerHTML='';
+ drawn.classList.remove('spread');
+ drawn.style.removeProperty('--draw-count');
+ drawn.innerHTML='<div class="muted">カードを引くボタンを押してください</div>';
+ try{localStorage.removeItem(lastDrawKey);}catch{}
+};
 const grid=document.getElementById('grid');grid.innerHTML=rows.map(c=>cardHTML(c,true,true)).join('');const cardDialog=document.getElementById('card-dialog');
 function detail(id){const c=byId(+id);document.getElementById('detail-title').textContent=`${String(c.id).padStart(2,'0')}. ${c.name} / ${c.en}`;document.getElementById('detail-card').innerHTML=cardHTML(c);document.getElementById('detail-meaning').textContent=c.meaning;document.getElementById('detail-explanation').textContent=c.explanation;cardDialog.showModal()}
 cardDialog.addEventListener('click',e=>{if(e.target===cardDialog){const r=cardDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)cardDialog.close()}});
@@ -487,5 +526,6 @@ tabs.forEach((tab,index)=>{
 });
 window.addEventListener('hashchange',activateFromHash);
 window.addEventListener('popstate',activateFromHash);
+restoreLastDraw();
 activateFromHash();
 </script></body></html>
