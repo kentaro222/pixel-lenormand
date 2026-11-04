@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v0.16</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v0.17</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <style>
@@ -92,19 +92,344 @@ body:has(#card-dialog[open]){overflow:hidden}
 #drawn:not(.spread) .card{width:100%;min-height:250px;aspect-ratio:auto;padding:12px 10px;gap:6px}
 #drawn:not(.spread) .sprite{width:128px;height:128px;background-size:768px 768px;background-position:calc(var(--col) * -128px) calc(var(--row) * -128px)}
 #drawn:not(.spread) .en{max-width:100%;overflow-wrap:anywhere;line-height:1.4}
-.guide-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid transparent;border-radius:8px;color:var(--text);font-size:14px;text-decoration:none}.guide-link:hover{background:#e1e6d8;border-color:#8a9b7c}.guide-link:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
-@media(max-width:600px){nav .guide-link{flex:1}}
+
+/* Guide styles stay inside the guide panel. */
+#guide{line-height:1.85}
+#guide h2{font-size:22px;line-height:1.5;color:var(--accent)}
+#guide h3{font-size:18px}
+#guide a{color:var(--accent);text-underline-offset:4px}
+#guide a:focus-visible,#guide summary:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+#guide .guide-toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+#guide .guide-toc a,#guide .back{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;text-decoration:none}
+#guide .panel{padding:24px;margin-top:24px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:12px}
+#guide .panel>h2:first-child{margin-top:0}
+#guide .note{font-size:14px;color:var(--muted)}
+#guide .question{font-weight:700;color:var(--accent)}
+#guide .reading{padding:16px;background:#f1f2e7;border-left:3px solid var(--gold);border-radius:6px}
+#guide .reading p:first-child{margin-top:0}
+#guide .reading p:last-child{margin-bottom:0}
+#guide li+li{margin-top:10px}
+#guide ol,#guide ul{padding-left:1.5em}
+#guide .spread{display:grid;grid-template-columns:repeat(var(--count),minmax(0,1fr));gap:12px;max-width:500px;margin:24px auto;align-items:start}
+#guide .spread.single{max-width:156px}
+#guide .example-card{margin:0;min-width:0}
+#guide figcaption{font-size:13px;text-align:center;color:var(--accent);margin-bottom:8px;font-weight:700}
+#guide .card{width:100%;max-width:156px;min-width:0;aspect-ratio:auto;gap:5px;line-height:1.4}
+#guide .card .sprite{width:96px;height:96px;background-size:576px 576px;background-position:calc(var(--col) * -96px) calc(var(--row) * -96px)}
+#guide details{border-top:1px solid var(--line);padding:16px 0}
+#guide summary{cursor:pointer;font-weight:700;min-height:44px;align-content:center}
+button.card{font-weight:normal}
+button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0 #bbc5a8}
+.card .en{overflow-wrap:anywhere}
+#detail-explanation{line-height:1.85;text-align:left}
+#detail-meaning{color:var(--accent);font-weight:700}
+@media(max-width:600px){
+ #guide .panel{padding:16px 12px;margin-top:16px}
+ #guide h2{font-size:20px}
+ #guide .spread{gap:6px}
+ #guide .card{padding:7px 2px;border-width:3px}
+ #guide .card .sprite{width:64px;height:64px;background-size:384px 384px;background-position:calc(var(--col) * -64px) calc(var(--row) * -64px)}
+ #guide .card .name{font-size:11px}
+ #guide .card .en{font-size:9px}
+}
 </style></head><body>
-<header><div><h1>PIXEL LENORMAND <small class="version">v0.16</small></h1></div><nav><button class="active" data-tab="draw">占う</button><button data-tab="library">カード図鑑</button><a class="guide-link" href="./guide.html">占い方</a></nav></header>
-<main><section id="draw" class="screen active" aria-label="占う"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" aria-label="カード図鑑"><div class="surface"><div id="grid" class="grid"></div></div></section></main><dialog id="card-dialog" aria-labelledby="detail-title"><form method="dialog"><button aria-label="閉じる">閉じる</button></form><h2 id="detail-title"></h2><div id="detail-card"></div><p id="detail-meaning"></p></dialog>
+<header><div><h1>PIXEL LENORMAND <small class="version">v0.17</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
+<main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface"><h2>ルノルマンの読み方</h2><p>質問の決め方から、1〜3枚引きの読み方まで。例のカードをタップすると、図鑑と同じ詳しい意味を確認できます。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#library">36枚の意味を調べる</a></div></div>
+<section class="panel" id="guide-basics">
+<h2>まずは、質問をひとつ決める</h2>
+<p>ルノルマンは、知らせを表す「騎士」、約束を表す「指輪」のように、絵柄を具体的な言葉に置き換えて読むカードです。複数枚なら、その言葉同士をつなげます。タロットとは別の体系で、ここでは正位置・逆位置を分けずに読みます。</p>
+<ol><li><strong>テーマと期間を絞る。</strong>「これからどうなる？」より「今週、新しい仕事に慣れるために意識したいことは？」のように尋ねます。</li><li><strong>枚数と読む順番を先に決める。</strong>まずは1枚、慣れたら2枚・3枚へ。引いてから都合よく役割を変えないようにします。</li><li><strong>カードを引き、まず絵を見る。</strong>占う画面では「1枚目」から順に読みます。キーワードを見る前に、何を連想したか一言メモしてもよいでしょう。</li><li><strong>言葉をつなげ、行動をひとつ選ぶ。</strong>「カード → 読み方 → 今日できること」の順に記録すると、あとで振り返りやすくなります。</li></ol>
+<p class="note">以下は固定のカードを使った読み方の一例です。意味や組み合わせには流派差があり、ひとつの正解に固定する必要はありません。同じ質問を引き直し続けるより、最初の読みと実際の出来事を比べてみましょう。</p>
+</section>
+<section class="panel" id="guide-one-card">
+<h2>1枚引き：ひとつのテーマに注目する</h2>
+<p>今日の心掛けや、状況の中心を短く知りたいときに。質問を決めて1枚引き、絵柄の意味をその質問に当てはめます。</p>
+<p class="question">質問例「今日を気持ちよく過ごすために、意識したいことは？」</p>
+<div class="spread single" style="--count:1"><figure class="example-card"><figcaption>1枚目：今日のヒント</figcaption><div data-example-card="2"></div></figure></div>
+<div class="reading"><p><strong>クローバー → 小さな幸運・機会。</strong><br>「大きな成果を求めすぎず、身近な楽しさや小さな機会を拾ってみよう」と読めます。</p><p><strong>行動の例：</strong>気になる誘いに返事をする、短い休憩で好きなお茶を飲むなど、小さく試せることをひとつ。</p></div>
+<p class="note">1枚だけで人生全体の結論を出そうとせず、質問の範囲でひとつのヒントを受け取ります。</p>
+</section>
+<section class="panel" id="guide-two-cards">
+<h2>2枚引き：ふたつの言葉をつなぐ</h2>
+<p>ここでは、1枚目を「中心の話題」、2枚目を「その話題を説明する言葉」と決めます。「何について、どんな状態？」と短い一文にする練習です。</p>
+<p class="question">質問例「今週、仕事のやり取りで気を付けたいことは？」</p>
+<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目：中心の話題</figcaption><div data-example-card="27"></div></figure><figure class="example-card"><figcaption>2枚目：説明する言葉</figcaption><div data-example-card="25"></div></figure></div>
+<div class="reading"><p><strong>手紙（文書・連絡）＋ 指輪（約束・契約）。</strong><br>「約束に関する連絡」「合意を文書に残すこと」がテーマ、と読めます。</p><p><strong>行動の例：</strong>口頭で決めた締め切りや担当範囲を、メールで確認する。契約が必ず成立するという予言ではなく、確認したい点を具体化します。</p></div>
+<p>順番を反対にすると、「指輪＝約束」を中心に「手紙＝文書で交わす」と説明する読みになります。意味が重なる組み合わせもありますが、毎回、先に決めた順番で読みましょう。</p>
+<details><summary>うまくつながらないときは？</summary><p>それぞれのキーワードをひとつずつ選び、「〜についての〜」「〜による〜」とつないでみます。たとえば「犬＋手紙」なら「友人からの連絡」。質問に合わない解釈を無理に足さず、複数の候補をメモしておいても構いません。</p></details>
+</section>
+<section class="panel" id="guide-three-cards">
+<h2>3枚引き：状況から行動へ、流れを読む</h2>
+<p>ここでは引く前に、1枚目を「現状」、2枚目を「取り組むヒント」、3枚目を「その先の見通し」と決めます。最後のカードも確定した未来ではなく、現在の状況から考える見通しとして扱います。</p>
+<p class="question">質問例「今週、止まっている作業を進めるには？」</p>
+<div class="spread" style="--count:3"><figure class="example-card"><figcaption>1枚目：現状</figcaption><div data-example-card="21"></div></figure><figure class="example-card"><figcaption>2枚目：ヒント</figcaption><div data-example-card="33"></div></figure><figure class="example-card"><figcaption>3枚目：見通し</figcaption><div data-example-card="31"></div></figure></div>
+<div class="reading"><p><strong>① 山：現状。</strong>作業の前に壁があり、進めにくい状態。</p><p><strong>② 鍵：取り組むヒント。</strong>全部を一度に解決しようとせず、詰まりの核心をひとつ見つける。</p><p><strong>③ 太陽：その先の見通し。</strong>核心に手を付けることで、進捗が見え、明るさや手応えを得られる可能性。</p><p><strong>ひとつの文章にすると：</strong>「壁になっている点を絞って解決すれば、作業の見通しが明るくなりそう」。まず不足している情報を書き出し、分かる人にひとつ質問してみます。</p></div>
+<details><summary>別の並べ方：「過去・現在・未来」</summary><p>1枚目＝過去、2枚目＝現在、3枚目＝未来という方法もあります。たとえば「船 → 庭園 → 錨」なら、「これまでの移動や挑戦を経て、今は人との交流があり、その先では居場所を定めていく」という読み方ができます。どの並べ方でも、役割は引く前に決めます。</p></details>
+<details><summary>役割を付けず、3枚をひとつの文章にする</summary><p>組み合わせに慣れたら、3枚を左から順に読む方法も試せます。「犬 → 手紙 → 指輪」なら「友人からの連絡が、約束につながる」といった読みです。最初の練習では、役割を決めた読み方と混ぜず、どちらで読むか先に選びましょう。</p></details>
+</section>
+
+<section class="panel"><h2>読んだら、ひとつ試して振り返る</h2><p>日付・質問・出た順番・自分の読み・試したことを短く残しておきましょう。あとで「実際はどうだったか」を足すと、自分にとってのカードの言葉が育っていきます。</p><p class="note">カードは考えを整理する手掛かりです。相手の気持ちや未来を事実として断定せず、実際の会話や情報も大切にしてください。</p><a class="back" href="#draw">占う画面で試す</a></section>
+</section></main><dialog id="card-dialog" aria-labelledby="detail-title"><form method="dialog"><button aria-label="閉じる">閉じる</button></form><h2 id="detail-title"></h2><div id="detail-card"></div><p id="detail-meaning"></p><p id="detail-explanation"></p></dialog>
 <script>
 const rows=[
-['騎士','Rider','🐎','知らせ・到来・動き'],['クローバー','Clover','🍀','小さな幸運・機会'],['船','Ship','🚢','旅・遠方・移動'],['家','House','🏠','家庭・安定・居場所'],['木','Tree','🌳','健康・成長・長期性'],['雲','Cloud','☁️','混乱・不透明さ'],['蛇','Snake','🐍','複雑さ・回り道'],['棺','Coffin','⚰️','終了・区切り・停止'],['花束','Bouquet','💐','贈り物・喜び・好意'],['鎌','Scythe','🌾','急な決断・切断'],['鞭','Whip','🪢','繰り返し・議論・衝突'],['鳥','Bird','🐦','会話・緊張・交流'],['子ども','Child','🧒','始まり・小ささ・純粋さ'],['狐','Fox','🦊','仕事・用心・策略'],['熊','Bear','🐻','力・権威・保護'],['星','Star','⭐','希望・目標・導き'],['コウノトリ','Stork','🕊️','変化・移行・改善'],['犬','Dog','🐕','友人・信頼・協力'],['塔','Tower','🏛️','組織・独立・距離'],['庭園','Garden','🌷','社交・集まり・公の場'],['山','Mountain','⛰️','障害・停滞・壁'],['道','Crossroad','🛤️','選択・複数の可能性'],['ネズミ','Mouse','🐭','損失・消耗・心配'],['ハート','Heart','❤️','愛情・好意・情熱'],['指輪','Ring','💍','約束・契約・つながり'],['本','Book','📖','知識・秘密・学習'],['手紙','Letter','✉️','文書・連絡・情報'],['紳士','Man','👨','男性人物・相談者'],['淑女','Woman','👩','女性人物・相談者'],['百合','Lily','🌸','成熟・調和・平穏'],['太陽','Sun','☀️','成功・活力・明るさ'],['月','Moon','🌙','感情・評価・直感'],['鍵','Key','🔑','解決・確信・重要性'],['魚','Fish','🐟','財産・商売・流れ'],['錨','Anchor','⚓','安定・仕事・継続'],['十字架','Cross','✝️','重荷・試練・責任']
-].map((a,i)=>({id:i+1,name:a[0],en:a[1],icon:a[2],meaning:a[3]}));
+ [
+  "騎士",
+  "Rider",
+  "🐎",
+  "知らせ・到来・動き",
+  "知らせや人がやって来る、物事が動き始める象徴。連絡、訪問、新しい展開として読めます。"
+ ],
+ [
+  "クローバー",
+  "Clover",
+  "🍀",
+  "小さな幸運・機会",
+  "ふと訪れる小さな幸運や、短いチャンス。大きな成功を待つより、目の前の機会を拾うイメージです。"
+ ],
+ [
+  "船",
+  "Ship",
+  "🚢",
+  "旅・遠方・移動",
+  "旅や遠方とのつながり、今いる場所から離れて進む動き。距離を置いて眺める意味にも読めます。"
+ ],
+ [
+  "家",
+  "House",
+  "🏠",
+  "家庭・安定・居場所",
+  "家庭や身近な居場所、慣れ親しんだ土台。安心感だけでなく、内輪に留まる状況を表すこともあります。"
+ ],
+ [
+  "木",
+  "Tree",
+  "🌳",
+  "健康・成長・長期性",
+  "時間をかけた成長や根付き、心身の状態。すぐに答えを出すより、長い目で育てる視点です。"
+ ],
+ [
+  "雲",
+  "Cloud",
+  "☁️",
+  "混乱・不透明さ",
+  "見通しの悪さや迷い、情報の曖昧さ。決めつけを避け、分からないことを確かめる手掛かりです。"
+ ],
+ [
+  "蛇",
+  "Snake",
+  "🐍",
+  "複雑さ・回り道",
+  "複雑な事情や回り道、慎重に扱いたい関係。誰かを悪者と決めつけず、絡み合う条件を見てみます。"
+ ],
+ [
+  "棺",
+  "Coffin",
+  "⚰️",
+  "終了・区切り・停止",
+  "区切り、停止、ひとつの段階の終わり。文字どおりの死を示すものとせず、終える対象を考えます。"
+ ],
+ [
+  "花束",
+  "Bouquet",
+  "💐",
+  "贈り物・喜び・好意",
+  "贈り物や好意、うれしい誘い。受け取る喜びと、感謝や気遣いを渡すことの両方で読めます。"
+ ],
+ [
+  "鎌",
+  "Scythe",
+  "🌾",
+  "急な決断・切断",
+  "急な決断や切り離す動き。素早く整理する意味もありますが、慌てて行動しない視点も添えます。"
+ ],
+ [
+  "鞭",
+  "Whip",
+  "🪢",
+  "繰り返し・議論・衝突",
+  "繰り返しや議論、摩擦。反復練習にも、同じ衝突が続く状態にも読めるため、質問に合わせます。"
+ ],
+ [
+  "鳥",
+  "Bird",
+  "🐦",
+  "会話・緊張・交流",
+  "会話ややり取り、落ち着かなさ。短い連絡や相談のほか、情報が飛び交う緊張感を表すこともあります。"
+ ],
+ [
+  "子ども",
+  "Child",
+  "🧒",
+  "始まり・小ささ・純粋さ",
+  "始まり、小さな規模、経験の浅さ。完成を急がず、試す・学ぶ・育てる段階として読めます。"
+ ],
+ [
+  "狐",
+  "Fox",
+  "🦊",
+  "仕事・用心・策略",
+  "用心や工夫、自分を守る判断。仕事を表す読み方もあります。相手の嘘を断定せず、条件を点検します。"
+ ],
+ [
+  "熊",
+  "Bear",
+  "🐻",
+  "力・権威・保護",
+  "力、保護、影響力の大きな存在。頼れる支えにも、過干渉や圧力にもなるので、周囲のカードを見ます。"
+ ],
+ [
+  "星",
+  "Star",
+  "⭐",
+  "希望・目標・導き",
+  "希望や目標、進むための指針。目指す姿を具体的にすると、今日の行動へつなげやすくなります。"
+ ],
+ [
+  "コウノトリ",
+  "Stork",
+  "🕊️",
+  "変化・移行・改善",
+  "変化、移行、改善。引っ越しなどの移動としても、やり方を少し変えることとしても読めます。"
+ ],
+ [
+  "犬",
+  "Dog",
+  "🐕",
+  "友人・信頼・協力",
+  "友人、信頼、協力。安心して相談できる相手や、積み重ねた誠実な関係に目を向けます。"
+ ],
+ [
+  "塔",
+  "Tower",
+  "🏛️",
+  "組織・独立・距離",
+  "組織や制度、独立、距離。会社や公的機関のほか、一人で考える時間を表す場合もあります。"
+ ],
+ [
+  "庭園",
+  "Garden",
+  "🌷",
+  "社交・集まり・公の場",
+  "人が集まる場、社交、公のつながり。交流会や地域、オンラインのコミュニティにも当てはめられます。"
+ ],
+ [
+  "山",
+  "Mountain",
+  "⛰️",
+  "障害・停滞・壁",
+  "障害や遅れ、越える必要のある壁。失敗の断定ではなく、時間や助けが要る箇所として読めます。"
+ ],
+ [
+  "道",
+  "Crossroad",
+  "🛤️",
+  "選択・複数の可能性",
+  "分かれ道や複数の可能性。何を基準に選ぶか、選択肢ごとの違いを整理する手掛かりです。"
+ ],
+ [
+  "ネズミ",
+  "Mouse",
+  "🐭",
+  "損失・消耗・心配",
+  "少しずつ失うこと、消耗、心配。大きな出来事より、小さな負担の積み重なりを見直します。"
+ ],
+ [
+  "ハート",
+  "Heart",
+  "❤️",
+  "愛情・好意・情熱",
+  "愛情、好意、情熱。恋愛に限らず、好きな活動や大切にしたいものへの思いにも読めます。"
+ ],
+ [
+  "指輪",
+  "Ring",
+  "💍",
+  "約束・契約・つながり",
+  "約束、契約、つながり、循環。結婚だけでなく、仕事の合意や継続的な関係も含みます。"
+ ],
+ [
+  "本",
+  "Book",
+  "📖",
+  "知識・秘密・学習",
+  "知識や学習、まだ明かされていないこと。秘密の存在を断定せず、未確認の情報を探す視点です。"
+ ],
+ [
+  "手紙",
+  "Letter",
+  "✉️",
+  "文書・連絡・情報",
+  "文書やメッセージ、記録に残る連絡。メール、申込書、通知など、具体的な情報の形として読めます。"
+ ],
+ [
+  "紳士",
+  "Man",
+  "👨",
+  "男性人物・相談者",
+  "人物を表すカード。伝統的には男性ですが、性別に縛られず、引く前に自分や相手などの役割を決めて使えます。"
+ ],
+ [
+  "淑女",
+  "Woman",
+  "👩",
+  "女性人物・相談者",
+  "人物を表すカード。伝統的には女性ですが、性別に縛られず、引く前に自分や相手などの役割を決めて使えます。"
+ ],
+ [
+  "百合",
+  "Lily",
+  "🌸",
+  "成熟・調和・平穏",
+  "成熟、調和、穏やかさ。落ち着いた関係や経験の蓄積として読めます。流派によって官能性の意味もあります。"
+ ],
+ [
+  "太陽",
+  "Sun",
+  "☀️",
+  "成功・活力・明るさ",
+  "明るさ、活力、達成。必ず成功するという保証ではなく、力を発揮できる点に目を向けます。"
+ ],
+ [
+  "月",
+  "Moon",
+  "🌙",
+  "感情・評価・直感",
+  "感情、直感、評価や評判。気分の波と、周囲にどう受け止められるかの両面から考えます。"
+ ],
+ [
+  "鍵",
+  "Key",
+  "🔑",
+  "解決・確信・重要性",
+  "解決の手掛かり、確信、重要な点。問題を開く鍵が何か、質問に即して具体化します。"
+ ],
+ [
+  "魚",
+  "Fish",
+  "🐟",
+  "財産・商売・流れ",
+  "お金、商売、資源の流れ。収入だけでなく、価値のやり取りや自由に動ける余地にも読めます。"
+ ],
+ [
+  "錨",
+  "Anchor",
+  "⚓",
+  "安定・仕事・継続",
+  "安定、継続、仕事、定着。頼もしい土台にも、動きにくさにもなるため、質問の文脈が大切です。"
+ ],
+ [
+  "十字架",
+  "Cross",
+  "✝️",
+  "重荷・試練・責任",
+  "重荷、責任、試練。背負うものを見つめるカードです。罰や避けられない不幸と決めつける必要はありません。"
+ ]
+].map((a,i)=>({id:i+1,name:a[0],en:a[1],icon:a[2],meaning:a[3],explanation:a[4]}));
 const byId=id=>rows.find(c=>c.id===id);
-function cardHTML(c,small=false){
- const i=c.id-1, col=i%6, row=Math.floor(i/6);
- return `<div class="card ${small?'small':''}" aria-label="${c.id} ${c.name}"><div class="number">${String(c.id).padStart(2,'0')}</div><div class="symbol"><span class="sprite" aria-hidden="true" style="--col:${col};--row:${row}"></span></div><div class="name">${c.name}</div><div class="en">${c.en}</div></div>`;
+function cardHTML(c,small=false,interactive=false){
+ const i=c.id-1, col=i%6, row=Math.floor(i/6), tag=interactive?'button':'div';
+ const attributes=interactive?`type="button" data-id="${c.id}" aria-haspopup="dialog"`:'';
+ return `<${tag} class="card ${small?'small':''} ${interactive?'clickable':''}" ${attributes} aria-label="${c.id} ${c.name}${interactive?'：詳しい意味を見る':''}"><span class="number">${String(c.id).padStart(2,'0')}</span><span class="symbol"><span class="sprite" aria-hidden="true" style="--col:${col};--row:${row}"></span></span><span class="name">${c.name}</span><span class="en">${c.en}</span></${tag}>`;
 }
 const drawn=document.getElementById('drawn'), keywords=document.getElementById('keywords');
 function selectDrawCount(n){
@@ -114,11 +439,53 @@ function selectDrawCount(n){
   button.setAttribute('aria-pressed',String(selected));
  });
 }
-function draw(n){selectDrawCount(n);let ids=rows.map(c=>c.id);for(let i=ids.length-1;i>0;i--){const arr=new Uint32Array(1);crypto.getRandomValues(arr);const j=arr[0]%(i+1);[ids[i],ids[j]]=[ids[j],ids[i]]}let chosen=ids.slice(0,n).map(byId);drawn.classList.toggle('spread',n>1);drawn.style.setProperty('--draw-count',n);drawn.innerHTML=chosen.map((c,i)=>`<div class="draw-slot" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c)}</div>`).join('');keywords.innerHTML='<details class="interpret"><summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>'+chosen.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('')+'</details>'}
+function draw(n){selectDrawCount(n);let ids=rows.map(c=>c.id);for(let i=ids.length-1;i>0;i--){const arr=new Uint32Array(1);crypto.getRandomValues(arr);const j=arr[0]%(i+1);[ids[i],ids[j]]=[ids[j],ids[i]]}let chosen=ids.slice(0,n).map(byId);drawn.classList.toggle('spread',n>1);drawn.style.setProperty('--draw-count',n);drawn.innerHTML=chosen.map((c,i)=>`<div class="draw-slot" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');keywords.innerHTML='<details class="interpret"><summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>'+chosen.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('')+'</details>'}
 document.getElementById('one').onclick=()=>draw(1);document.getElementById('two').onclick=()=>draw(2);document.getElementById('three').onclick=()=>draw(3);document.getElementById('reset').onclick=()=>{selectDrawCount(null);keywords.innerHTML='';drawn.classList.remove('spread');drawn.innerHTML='<div class="muted">カードを引くボタンを押してください</div>'};
-const grid=document.getElementById('grid');grid.innerHTML=rows.map(c=>cardHTML(c,true).replace('class="card small"', `class="card small clickable" data-id="${c.id}" tabindex="0" role="button"`)).join('');const cardDialog=document.getElementById('card-dialog');
-function detail(id){const c=byId(+id);document.getElementById('detail-title').textContent=`${String(c.id).padStart(2,'0')}. ${c.name} / ${c.en}`;document.getElementById('detail-card').innerHTML=cardHTML(c);document.getElementById('detail-meaning').textContent=c.meaning;cardDialog.showModal()}
+const grid=document.getElementById('grid');grid.innerHTML=rows.map(c=>cardHTML(c,true,true)).join('');const cardDialog=document.getElementById('card-dialog');
+function detail(id){const c=byId(+id);document.getElementById('detail-title').textContent=`${String(c.id).padStart(2,'0')}. ${c.name} / ${c.en}`;document.getElementById('detail-card').innerHTML=cardHTML(c);document.getElementById('detail-meaning').textContent=c.meaning;document.getElementById('detail-explanation').textContent=c.explanation;cardDialog.showModal()}
 cardDialog.addEventListener('click',e=>{if(e.target===cardDialog){const r=cardDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)cardDialog.close()}});
-grid.addEventListener('click',e=>{const el=e.target.closest('[data-id]');if(el)detail(el.dataset.id)});grid.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const el=e.target.closest('[data-id]');if(el){e.preventDefault();detail(el.dataset.id)}}});
-document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===b.dataset.tab))}));
+// Native buttons support tap, Enter and Space in all three screens.
+for(const root of [drawn,grid,document.getElementById('guide')]){
+ root.addEventListener('click',e=>{
+  const card=e.target.closest('button[data-id]');
+  if(card)detail(card.dataset.id);
+ });
+}
+document.querySelectorAll('[data-example-card]').forEach(el=>{
+ el.innerHTML=cardHTML(byId(Number(el.dataset.exampleCard)),false,true);
+});
+const tabs=[...document.querySelectorAll('[data-tab]')];
+function activateFromHash(){
+ const hash=location.hash.slice(1);
+ const id=hash.startsWith('guide-')?'guide':(['draw','library','guide'].includes(hash)?hash:'draw');
+ tabs.forEach(tab=>{
+  const selected=tab.dataset.tab===id;
+  tab.classList.toggle('active',selected);
+  tab.setAttribute('aria-selected',String(selected));
+  tab.tabIndex=selected?0:-1;
+ });
+ document.querySelectorAll('.screen').forEach(screen=>{
+  screen.classList.toggle('active',screen.id===id);
+  screen.hidden=screen.id!==id;
+ });
+ if(hash.startsWith('guide-'))document.getElementById(hash)?.scrollIntoView();
+}
+tabs.forEach((tab,index)=>{
+ tab.addEventListener('click',()=>{
+  if(location.hash!=='#'+tab.dataset.tab)history.pushState(null,'','#'+tab.dataset.tab);
+  activateFromHash();
+  window.scrollTo(0,0);
+ });
+ tab.addEventListener('keydown',e=>{
+  let next;
+  if(e.key==='ArrowRight')next=(index+1)%tabs.length;
+  if(e.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;
+  if(e.key==='Home')next=0;
+  if(e.key==='End')next=tabs.length-1;
+  if(next!==undefined){e.preventDefault();tabs[next].focus();tabs[next].click();}
+ });
+});
+window.addEventListener('hashchange',activateFromHash);
+window.addEventListener('popstate',activateFromHash);
+activateFromHash();
 </script></body></html>
