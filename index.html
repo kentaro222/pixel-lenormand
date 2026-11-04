@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v0.17</title>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PIXEL LENORMAND v1.0</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <style>
@@ -133,7 +133,7 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
  #guide .card .en{font-size:9px}
 }
 </style></head><body>
-<header><div><h1>PIXEL LENORMAND <small class="version">v0.17</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
+<header><div><h1>PIXEL LENORMAND <small class="version">v1.0</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
 <main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface"><h2>ルノルマンの読み方</h2><p>質問の決め方から、1〜3枚引きの読み方まで。例のカードをタップすると、図鑑と同じ詳しい意味を確認できます。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#library">36枚の意味を調べる</a></div></div>
 <section class="panel" id="guide-basics">
 <h2>まずは、質問をひとつ決める</h2>
