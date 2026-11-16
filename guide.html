@@ -3,54 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ルノルマンの読み方 | PIXEL LENORMAND v0.16</title>
+<title>身近なことを、カードで占ってみよう | PIXEL LENORMAND v1.7</title>
 <link rel="icon" href="./favicon.png">
 <style>
 :root{--bg:#f5f0e5;--panel:#fffcf5;--line:#d8d1bd;--text:#243d33;--muted:#626b5b;--accent:#286047;--gold:#ad8745}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.85}header,main,footer{max-width:960px;margin:auto;padding:24px}header{border-bottom:1px solid var(--line)}h1{font-size:clamp(24px,5vw,34px);line-height:1.5;margin:12px 0}h2{font-size:24px;line-height:1.5;color:var(--accent)}h3{font-size:18px;line-height:1.6}p{margin:12px 0}a{color:var(--accent);text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.brand,.version{font-size:13px;color:var(--muted)}.version{margin-left:8px}.intro{max-width:42em}nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}nav a,.back{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-decoration:none}nav a:hover,.back:hover{background:#e1e6d8}.panel{padding:26px;margin:0 0 24px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:12px}.panel>h2:first-child{margin-top:0}.note{color:var(--muted);font-size:14px}.question{font-weight:700;color:var(--accent)}.reading{padding:16px;background:#f1f2e7;border-left:3px solid var(--gold);border-radius:6px}.reading p:first-child{margin-top:0}.reading p:last-child{margin-bottom:0}li+li{margin-top:10px}ol,ul{padding-left:1.5em}.spread{display:grid;grid-template-columns:repeat(var(--count),minmax(0,1fr));gap:12px;max-width:500px;margin:24px auto;align-items:start}.spread.single{max-width:156px}.example-card{margin:0;min-width:0}figcaption{font-size:13px;text-align:center;color:var(--accent);margin-bottom:8px;font-weight:700}.card{display:flex;flex-direction:column;align-items:center;gap:5px;background:#f4e8ca;border:4px solid var(--gold);border-radius:6px;padding:9px 4px;box-shadow:0 4px 0 #32412b1f;min-width:0;text-align:center;line-height:1.4}.number{font-size:14px;font-weight:800;color:#72531e}.english{font-size:11px;overflow-wrap:anywhere}.sprite{display:block;width:96px;height:96px;flex-shrink:0;background-image:url('./lenormand_sprites.png');background-repeat:no-repeat;background-size:576px 576px;background-position:calc(var(--col) * -96px) calc(var(--row) * -96px);image-rendering:pixelated}.card-entry{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;border-top:1px solid var(--line);padding:24px 0;align-items:start}.card-entry:last-child{padding-bottom:0}.card-entry h3{margin:0}.card-entry p:last-child{margin-bottom:0}.keywords{font-size:14px;font-weight:700;color:var(--accent)}.card-entry .card strong{font-size:14px}.card-index{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0}.card-index a{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:6px;text-decoration:none}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:700;min-height:44px;align-content:center}footer{padding-top:0;color:var(--muted);font-size:14px}
 @media(max-width:600px){header,main,footer{padding:18px 12px}.panel{padding:18px 14px}h2{font-size:21px}.spread{gap:6px}.spread .sprite{width:72px;height:72px;background-size:432px 432px;background-position:calc(var(--col) * -72px) calc(var(--row) * -72px)}.spread .card strong{font-size:13px}.spread .english{font-size:9px}.card-entry{grid-template-columns:100px minmax(0,1fr);gap:12px}.card-entry .sprite{width:72px;height:72px;background-size:432px 432px;background-position:calc(var(--col) * -72px) calc(var(--row) * -72px)}.card-entry .card strong{font-size:12px}.card-entry .english{font-size:10px}}
+.guide-lead{font-weight:700;color:var(--accent)}.guide-example+.guide-example{margin-top:32px;padding-top:20px;border-top:1px solid var(--line)}.reading ul{margin:0}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body id="top">
-<header>
-<a class="brand" href="./index.html">PIXEL LENORMAND</a><span class="version">v0.16</span>
-<h1>絵をつなげて読む、<br>ルノルマンカード</h1>
-<p class="intro">36枚の身近なモチーフから、今の状況や行動のヒントを言葉にしてみましょう。ここでは、このアプリのカードを使って、1枚・2枚・3枚引きの基本を紹介します。</p>
-<nav aria-label="解説の目次"><a href="#basics">はじめに</a><a href="#one-card">1枚引き</a><a href="#two-cards">2枚引き</a><a href="#three-cards">3枚引き</a><a href="#meanings">36枚の意味</a><a href="./index.html">占う画面へ</a></nav>
-</header>
-<main>
-<section class="panel" id="basics">
-<h2>まずは、質問をひとつ決める</h2>
-<p>ルノルマンは、知らせを表す「騎士」、約束を表す「指輪」のように、絵柄を具体的な言葉に置き換えて読むカードです。複数枚なら、その言葉同士をつなげます。タロットとは別の体系で、ここでは正位置・逆位置を分けずに読みます。</p>
-<ol><li><strong>テーマと期間を絞る。</strong>「これからどうなる？」より「今週、新しい仕事に慣れるために意識したいことは？」のように尋ねます。</li><li><strong>枚数と読む順番を先に決める。</strong>まずは1枚、慣れたら2枚・3枚へ。引いてから都合よく役割を変えないようにします。</li><li><strong>カードを引き、まず絵を見る。</strong>占う画面では「1枚目」から順に読みます。キーワードを見る前に、何を連想したか一言メモしてもよいでしょう。</li><li><strong>言葉をつなげ、行動をひとつ選ぶ。</strong>「カード → 読み方 → 今日できること」の順に記録すると、あとで振り返りやすくなります。</li></ol>
-<p class="note">以下は固定のカードを使った読み方の一例です。意味や組み合わせには流派差があり、ひとつの正解に固定する必要はありません。同じ質問を引き直し続けるより、最初の読みと実際の出来事を比べてみましょう。</p>
+<header id="guide-basics"><a class="brand" href="./index.html">PIXEL LENORMAND</a><span class="version">v1.7</span><h1>身近なことを、カードで占ってみよう</h1>
+<p class="guide-lead">どのカードも、あなたの味方です。</p>
+<p>友だちに送るメッセージや、明日の仕事のこと。気になる場面をひとつ思い浮かべて、カードを引いてみましょう。気になる絵が出た日は、「どうしたら少し楽になれるかな？」と考えてみるのもいいですね。質問を決めずに引いたり、絵を眺めるだけで終えたりしても大丈夫です。</p><nav aria-label="解説の目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#guide-keywords">何も浮かばないとき</a><a href="#meanings">36枚の意味を調べる</a></nav></header>
+<main><section class="panel" id="guide-one-card">
+<h2>1枚で、ひとつのヒント</h2>
+<article class="guide-example">
+<p class="question">友だちと会う日を決めたい。どんなメッセージを送ろう？</p>
+<div class="spread single" style="--count:1"><figure class="example-card"><figcaption>出たカード</figcaption><div class="card" aria-label="21 山"><span class="number">21</span><span class="sprite" aria-hidden="true" style="--col:2;--row:3"></span><strong>山</strong><span class="english" lang="en">Mountain</span></div></figure></div>
+<div class="reading"><p>出たのは「山」。大きな山を見て、登るなら一歩ずつだなと思いました。日にちも時間も場所も一度に決めようとしていたけれど、まずは「土曜と日曜、どっちが空いてる？」と聞くだけでよさそうです。</p></div>
+</article>
+<article class="guide-example">
+<p class="question">夕食のあとも、やることが残ってる。今夜はどこまでやろう？</p>
+<div class="spread single" style="--count:1"><figure class="example-card"><figcaption>出たカード</figcaption><div class="card" aria-label="6 雲"><span class="number">06</span><span class="sprite" aria-hidden="true" style="--col:5;--row:0"></span><strong>雲</strong><span class="english" lang="en">Cloud</span></div></figure></div>
+<div class="reading"><p>出たのは「雲」。雲で遠くが見えにくい空を見て、「やることが多くて、頭の中もぼんやりしてるかも」と思いました。今夜は明日の朝に使う食器だけ洗って、あとは明日に回そうかな。</p></div>
+</article>
 </section>
-<section class="panel" id="one-card">
-<h2>1枚引き：ひとつのテーマに注目する</h2>
-<p>今日の心掛けや、状況の中心を短く知りたいときに。質問を決めて1枚引き、絵柄の意味をその質問に当てはめます。</p>
-<p class="question">質問例「今日を気持ちよく過ごすために、意識したいことは？」</p>
-<div class="spread single" style="--count:1"><figure class="example-card"><figcaption>1枚目：今日のヒント</figcaption><div class="card" aria-label="2 クローバー"><span class="number">02</span><span class="sprite" aria-hidden="true" style="--col:1;--row:0"></span><strong>クローバー</strong><span class="english" lang="en">Clover</span></div></figure></div>
-<div class="reading"><p><strong>クローバー → 小さな幸運・機会。</strong><br>「大きな成果を求めすぎず、身近な楽しさや小さな機会を拾ってみよう」と読めます。</p><p><strong>行動の例：</strong>気になる誘いに返事をする、短い休憩で好きなお茶を飲むなど、小さく試せることをひとつ。</p></div>
-<p class="note">1枚だけで人生全体の結論を出そうとせず、質問の範囲でひとつのヒントを受け取ります。</p>
+<section class="panel" id="guide-two-cards">
+<h2>2枚で、ひとつの場面</h2>
+<p>2枚引いたら、並んだ絵を眺めてみましょう。目に留まったほうから見て、浮かんだことをもう一方の絵に重ねてみます。</p>
+<p class="question">明日、初めて行くお店で待ち合わせ。今夜のうちに何を確認しよう？</p>
+<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目</figcaption><div class="card" aria-label="6 雲"><span class="number">06</span><span class="sprite" aria-hidden="true" style="--col:5;--row:0"></span><strong>雲</strong><span class="english" lang="en">Cloud</span></div></figure><figure class="example-card"><figcaption>2枚目</figcaption><div class="card" aria-label="23 ネズミ"><span class="number">23</span><span class="sprite" aria-hidden="true" style="--col:4;--row:3"></span><strong>ネズミ</strong><span class="english" lang="en">Mouse</span></div></figure></div>
+<div class="reading"><p>出たのは「雲」と「ネズミ」。最初はどうつながるか分かりませんでした。雲からは先がよく見えない道、ネズミからは食べ物を少しずつかじる様子が浮かびました。</p><p>「少しずつ減る」を待ち合わせに重ねると、駅の出口を探しているうちに時間が過ぎていく場面が浮かびます。今夜のうちに、お店に近い出口を確認しておこうかな。</p></div>
 </section>
-<section class="panel" id="two-cards">
-<h2>2枚引き：ふたつの言葉をつなぐ</h2>
-<p>ここでは、1枚目を「中心の話題」、2枚目を「その話題を説明する言葉」と決めます。「何について、どんな状態？」と短い一文にする練習です。</p>
-<p class="question">質問例「今週、仕事のやり取りで気を付けたいことは？」</p>
-<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目：中心の話題</figcaption><div class="card" aria-label="27 手紙"><span class="number">27</span><span class="sprite" aria-hidden="true" style="--col:2;--row:4"></span><strong>手紙</strong><span class="english" lang="en">Letter</span></div></figure><figure class="example-card"><figcaption>2枚目：説明する言葉</figcaption><div class="card" aria-label="25 指輪"><span class="number">25</span><span class="sprite" aria-hidden="true" style="--col:0;--row:4"></span><strong>指輪</strong><span class="english" lang="en">Ring</span></div></figure></div>
-<div class="reading"><p><strong>手紙（文書・連絡）＋ 指輪（約束・契約）。</strong><br>「約束に関する連絡」「合意を文書に残すこと」がテーマ、と読めます。</p><p><strong>行動の例：</strong>口頭で決めた締め切りや担当範囲を、メールで確認する。契約が必ず成立するという予言ではなく、確認したい点を具体化します。</p></div>
-<p>順番を反対にすると、「指輪＝約束」を中心に「手紙＝文書で交わす」と説明する読みになります。意味が重なる組み合わせもありますが、毎回、先に決めた順番で読みましょう。</p>
-<details><summary>うまくつながらないときは？</summary><p>それぞれのキーワードをひとつずつ選び、「〜についての〜」「〜による〜」とつないでみます。たとえば「犬＋手紙」なら「友人からの連絡」。質問に合わない解釈を無理に足さず、複数の候補をメモしておいても構いません。</p></details>
+<section class="panel" id="guide-three-cards">
+<h2>3枚で、これまで・いま・この先</h2>
+<p>3枚引いたら、左から「これまでにあったこと」「いまの様子」「この先にありそうなこと」として眺めてみましょう。</p>
+<p>「この先」は、今の進め方を続けたらどうなりそうか、というつもりで眺めてみましょう。決まった未来ではなく、これからの工夫を考えるヒントです。</p>
+<p class="question">明日の午前中までに会議資料を仕上げたい。まだ直すところが多いけど、どう進みそう？</p>
+<div class="spread" style="--count:3"><figure class="example-card"><figcaption>これまで</figcaption><div class="card" aria-label="8 棺"><span class="number">08</span><span class="sprite" aria-hidden="true" style="--col:1;--row:1"></span><strong>棺</strong><span class="english" lang="en">Coffin</span></div></figure><figure class="example-card"><figcaption>いま</figcaption><div class="card" aria-label="23 ネズミ"><span class="number">23</span><span class="sprite" aria-hidden="true" style="--col:4;--row:3"></span><strong>ネズミ</strong><span class="english" lang="en">Mouse</span></div></figure><figure class="example-card"><figcaption>この先</figcaption><div class="card" aria-label="10 鎌"><span class="number">10</span><span class="sprite" aria-hidden="true" style="--col:3;--row:1"></span><strong>鎌</strong><span class="english" lang="en">Scythe</span></div></figure></div>
+<p>出たのは「棺」「ネズミ」「鎌」。少し身構える並びです。まずは1枚ずつ、見た絵からどんなことが浮かぶか考えてみます。</p>
+<div class="reading"><ul>
+<li><strong>これまで · 棺</strong><br>棺から「ひとつのことが終わる」と連想しました。そういえば、会議の方針が変わって、前に作った資料は使わないことになりました。</li>
+<li><strong>いま · ネズミ</strong><br>ネズミが食べ物を少しずつかじるように、表の見た目や言い回しを直すたびに、残り時間が少しずつ減っています。</li>
+<li><strong>この先 · 鎌</strong><br>鎌は草を刈る道具です。「切る」というイメージを資料に重ねると、全部を仕上げる時間がなくて、載せる内容を絞ることになりそうです。</li>
+</ul></div>
+<p>そう読んだら、会議で使う数字を先にそろえて、参考ページはあとから足してもいいか聞いてみる。気になるカードが、早めに相談するきっかけをくれました。</p>
 </section>
-<section class="panel" id="three-cards">
-<h2>3枚引き：状況から行動へ、流れを読む</h2>
-<p>ここでは引く前に、1枚目を「現状」、2枚目を「取り組むヒント」、3枚目を「その先の見通し」と決めます。最後のカードも確定した未来ではなく、現在の状況から考える見通しとして扱います。</p>
-<p class="question">質問例「今週、止まっている作業を進めるには？」</p>
-<div class="spread" style="--count:3"><figure class="example-card"><figcaption>1枚目：現状</figcaption><div class="card" aria-label="21 山"><span class="number">21</span><span class="sprite" aria-hidden="true" style="--col:2;--row:3"></span><strong>山</strong><span class="english" lang="en">Mountain</span></div></figure><figure class="example-card"><figcaption>2枚目：ヒント</figcaption><div class="card" aria-label="33 鍵"><span class="number">33</span><span class="sprite" aria-hidden="true" style="--col:2;--row:5"></span><strong>鍵</strong><span class="english" lang="en">Key</span></div></figure><figure class="example-card"><figcaption>3枚目：見通し</figcaption><div class="card" aria-label="31 太陽"><span class="number">31</span><span class="sprite" aria-hidden="true" style="--col:0;--row:5"></span><strong>太陽</strong><span class="english" lang="en">Sun</span></div></figure></div>
-<div class="reading"><p><strong>① 山：現状。</strong>作業の前に壁があり、進めにくい状態。</p><p><strong>② 鍵：取り組むヒント。</strong>全部を一度に解決しようとせず、詰まりの核心をひとつ見つける。</p><p><strong>③ 太陽：その先の見通し。</strong>核心に手を付けることで、進捗が見え、明るさや手応えを得られる可能性。</p><p><strong>ひとつの文章にすると：</strong>「壁になっている点を絞って解決すれば、作業の見通しが明るくなりそう」。まず不足している情報を書き出し、分かる人にひとつ質問してみます。</p></div>
-<details><summary>別の並べ方：「過去・現在・未来」</summary><p>1枚目＝過去、2枚目＝現在、3枚目＝未来という方法もあります。たとえば「船 → 庭園 → 錨」なら、「これまでの移動や挑戦を経て、今は人との交流があり、その先では居場所を定めていく」という読み方ができます。どの並べ方でも、役割は引く前に決めます。</p></details>
-<details><summary>役割を付けず、3枚をひとつの文章にする</summary><p>組み合わせに慣れたら、3枚を左から順に読む方法も試せます。「犬 → 手紙 → 指輪」なら「友人からの連絡が、約束につながる」といった読みです。最初の練習では、役割を決めた読み方と混ぜず、どちらで読むか先に選びましょう。</p></details>
+<section class="panel" id="guide-keywords">
+<h2>絵を見ても、何も浮かばなかったら</h2>
+<p>占う画面で「カードのキーワードを見る」を開いてみましょう。気になる言葉をひとつ拾って、さっきの質問に重ねてみます。2枚や3枚を引いたときも、1枚の言葉から始めて大丈夫です。</p>
+<p class="question">宅配の荷物がまだ届かない。問い合わせる前に何を見ておこう？</p>
+<div class="spread" style="--count:2"><figure class="example-card"><figcaption>1枚目</figcaption><div class="card" aria-label="21 山"><span class="number">21</span><span class="sprite" aria-hidden="true" style="--col:2;--row:3"></span><strong>山</strong><span class="english" lang="en">Mountain</span></div></figure><figure class="example-card"><figcaption>2枚目</figcaption><div class="card" aria-label="27 手紙"><span class="number">27</span><span class="sprite" aria-hidden="true" style="--col:2;--row:4"></span><strong>手紙</strong><span class="english" lang="en">Letter</span></div></figure></div>
+<div class="reading"><p>「山」と「手紙」が出たけれど、絵を眺めてもピンときません。キーワードを開くと、山の「停滞」が目に留まりました。手紙の「連絡」と合わせて、「配送のお知らせを見れば、荷物が今どこにあるか分かるかも」と思いつきました。まずは発送メールを開いて、追跡番号を探してみます。</p></div>
+<p>「停滞」のような言葉が気になったら、「今の自分にできることは何だろう？」と問いかけてみても。しっくりくる読みが浮かばない日は、そこでおしまいにして大丈夫です。</p>
+<a class="back" href="./index.html#draw">占う画面で試す</a>
 </section>
 <section class="panel" id="meanings">
 <h2>36枚の意味を調べる</h2>
@@ -93,7 +101,6 @@
 <article class="card-entry" id="card-35"><figure class="example-card"><div class="card" aria-label="35 錨"><span class="number">35</span><span class="sprite" aria-hidden="true" style="--col:4;--row:5"></span><strong>錨</strong><span class="english" lang="en">Anchor</span></div></figure><div><h3>35. 錨</h3><p class="keywords">安定・仕事・継続</p><p>安定、継続、仕事、定着。頼もしい土台にも、動きにくさにもなるため、質問の文脈が大切です。</p></div></article>
 <article class="card-entry" id="card-36"><figure class="example-card"><div class="card" aria-label="36 十字架"><span class="number">36</span><span class="sprite" aria-hidden="true" style="--col:5;--row:5"></span><strong>十字架</strong><span class="english" lang="en">Cross</span></div></figure><div><h3>36. 十字架</h3><p class="keywords">重荷・試練・責任</p><p>重荷、責任、試練。背負うものを見つめるカードです。罰や避けられない不幸と決めつける必要はありません。</p></div></article>
 </section>
-<section class="panel"><h2>読んだら、ひとつ試して振り返る</h2><p>日付・質問・出た順番・自分の読み・試したことを短く残しておきましょう。あとで「実際はどうだったか」を足すと、自分にとってのカードの言葉が育っていきます。</p><p class="note">カードは考えを整理する手掛かりです。相手の気持ちや未来を事実として断定せず、実際の会話や情報も大切にしてください。</p><a class="back" href="./index.html">占う画面で試す</a></section>
 </main>
 <footer><a href="#top">ページの先頭へ</a><p>PIXEL LENORMAND · このページのカード画像は、アプリと同じドット絵を使用しています。</p></footer>
 </body></html>
