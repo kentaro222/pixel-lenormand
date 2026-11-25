@@ -3,7 +3,7 @@
 <link rel="manifest" href="./manifest.json?v=1.5">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=1.5">
 <style>
-:root{--bg:#f5f0e5;--panel:#fffcf5;--line:#d8d1bd;--text:#243d33;--muted:#626b5b;--accent:#286047;--gold:#a17a33;--card:#f4e8ca;--card-line:#ad8745;--shadow:rgba(50,65,43,.12)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}header,main{max-width:1024px;margin:auto;padding:18px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line)}h1{font-size:22px;margin:3px 0}h2{font-size:18px}p{color:var(--muted);line-height:1.6}.muted{color:var(--muted);font-size:13px}.eyebrow{letter-spacing:.12em;color:var(--accent);font-size:11px}nav{display:flex;gap:8px;flex-wrap:wrap}button{cursor:pointer;border:1px solid var(--line);background:#eeeadc;color:var(--text);padding:10px 14px;border-radius:8px;font:inherit}button.active,button.primary{background:var(--accent);color:#fffdf4; border-color:var(--accent);font-weight:700}button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.screen{display:none}.screen.active{display:block}.surface{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:20px}.cardrow{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:24px 0}.card{width:158px;aspect-ratio:3/4;background:var(--card);border:6px solid var(--card-line);box-shadow:0 6px 0 var(--shadow);border-radius:7px;color:var(--text);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 6px}.card .number{align-self:flex-start;font-size:13px;font-weight:800}.card .symbol{font-size:61px;line-height:1.2;height:70px;display:grid;place-items:center;image-rendering:pixelated}.card img{width:96px;height:96px;object-fit:contain;image-rendering:pixelated}.card .name{font-size:17px;font-weight:800}.card .en{font-size:11px}.card.small{width:112px;border-width:4px;padding:7px 3px;box-shadow:0 3px 0 var(--shadow)}.card.small .symbol{font-size:38px;height:51px}.card.small img{width:52px;height:52px}.card.small .name{font-size:13px}.card.small .en{font-size:10px}.card.small .number{font-size:11px}.card.clickable{cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px;justify-items:center}.interpret{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.interpret strong{color:var(--accent)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{min-height:54px}@media(max-width:600px){header{flex-direction:column;align-items:flex-start}.card{width:130px}.card .symbol{font-size:48px}.cardrow{gap:8px}.surface{padding:14px}.card.small{width:100px}.grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}}
+:root{--bg:#f5f0e5;--panel:#fffcf5;--line:#d8d1bd;--text:#243d33;--muted:#626b5b;--accent:#286047;--gold:#a17a33;--card:#f4e8ca;--card-line:#ad8745;--shadow:rgba(50,65,43,.12)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}header,main{max-width:1024px;margin:auto;padding:18px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line)}h1{font-size:22px;margin:3px 0}h2{font-size:18px}p{color:var(--muted);line-height:1.6}.muted{color:var(--muted);font-size:13px}.eyebrow{letter-spacing:.12em;color:var(--accent);font-size:11px}nav{display:flex;gap:8px;flex-wrap:wrap}button{cursor:pointer;border:1px solid var(--line);background:#eeeadc;color:var(--text);padding:10px 14px;border-radius:8px;font:inherit}button.active{background:var(--accent);color:#fffdf4; border-color:var(--accent);font-weight:700}button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.screen{display:none}.screen.active{display:block}.surface{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:20px}.cardrow{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:24px 0}.card{width:158px;aspect-ratio:3/4;background:var(--card);border:6px solid var(--card-line);box-shadow:0 6px 0 var(--shadow);border-radius:7px;color:var(--text);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 6px}.card .number{align-self:flex-start;font-size:13px;font-weight:800}.card .symbol{font-size:61px;line-height:1.2;height:70px;display:grid;place-items:center;image-rendering:pixelated}.card img{width:96px;height:96px;object-fit:contain;image-rendering:pixelated}.card .name{font-size:17px;font-weight:800}.card .en{font-size:11px}.card.small{width:112px;border-width:4px;padding:7px 3px;box-shadow:0 3px 0 var(--shadow)}.card.small .symbol{font-size:38px;height:51px}.card.small img{width:52px;height:52px}.card.small .name{font-size:13px}.card.small .en{font-size:10px}.card.small .number{font-size:11px}.card.clickable{cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px;justify-items:center}.interpret{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.interpret strong{color:var(--accent)}.actions{display:flex;gap:10px;flex-wrap:wrap}.result{min-height:54px}@media(max-width:600px){header{flex-direction:column;align-items:flex-start}.card{width:130px}.card .symbol{font-size:48px}.cardrow{gap:8px}.surface{padding:14px}.card.small{width:100px}.grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}}
 :root{--sprite-url:url("./lenormand_sprites.png")}
 
 .card{position:relative;justify-content:space-between;gap:3px;padding:10px 8px 12px}
@@ -27,8 +27,7 @@ nav{background:#e9e5d7;border:1px solid var(--line);padding:5px;border-radius:12
 nav button{background:transparent;border-color:transparent;font-size:14px}
 button{transition:background .15s ease,box-shadow .15s ease;min-height:44px}
 button:hover{background:#e1e6d8;border-color:#8a9b7c}
-button.active:hover,button.primary:hover{background:#1d4b36;border-color:#1d4b36}
-button.primary{box-shadow:0 3px 0 #d5d9c8}
+button.active:hover{background:#1d4b36;border-color:#1d4b36}
 .surface{margin-top:28px;padding:28px;border-top:3px solid var(--gold);box-shadow:0 10px 32px rgba(63,64,36,.06)}
 #drawn{min-height:230px;align-items:center;padding:24px 12px;background:#eeeadd;border:1px dashed #c8c3ac;border-radius:12px}
 .card .number{color:#72531e}
@@ -52,8 +51,9 @@ button.primary{box-shadow:0 3px 0 #d5d9c8}
 .draw-choice:hover span{background:#e1e6d8;border-color:#8a9b7c}
 .draw-choice input:checked + span{background:var(--accent);color:#fffdf4;border-color:var(--accent);font-weight:700}
 .draw-choice input:focus-visible + span{outline:3px solid var(--gold);outline-offset:4px}
-.draw-controls button:disabled{cursor:default;opacity:.48;box-shadow:none}
-.draw-controls button:disabled:hover{background:#eeeadc;border-color:var(--line);color:var(--text)}
+.actions button:enabled{background:var(--accent);color:#fffdf4;border-color:var(--accent);font-weight:700;box-shadow:0 3px 0 #d5d9c8}
+.actions button:enabled:hover{background:#1d4b36;border-color:#1d4b36}
+.actions button:disabled{background:transparent;border-color:var(--line);cursor:default;opacity:.48}
 .storage-note{margin:12px 0 0;font-size:13px}
 
 @media(max-width:600px){header{padding-top:22px}h1{font-size:21px}.surface{padding:18px;margin-top:18px}#drawn{min-height:210px;padding:20px 6px}nav{width:100%}nav button{flex:1}}
@@ -108,7 +108,6 @@ h1{font-size:22px;letter-spacing:.035em}
  .draw-choice span{min-height:48px;padding-inline:3px;font-size:14px}
  .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .actions button{min-height:48px;font-weight:700;padding:10px 8px}
- #reset{background:transparent}
  #drawn{--draw-gap:6px;margin:18px 0;padding:18px 8px;min-height:220px}
  #drawn.spread{min-height:0}
  .draw-order{font-size:10px;white-space:nowrap}
@@ -185,7 +184,7 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
     </div>
    </fieldset>
    <div class="actions">
-    <button class="primary" type="submit" id="draw-button">カードを引く</button>
+    <button type="submit" id="draw-button">カードを引く</button>
     <button type="button" id="reset" disabled>リセット</button>
    </div>
    <p class="storage-note" id="storage-note" role="status" hidden>このブラウザでは保存できません。現在のページを開いている間は使えます。</p>
