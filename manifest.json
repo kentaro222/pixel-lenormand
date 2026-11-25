@@ -1,6 +1,7 @@
 {
   "name": "PIXEL LENORMAND",
   "short_name": "PIXEL LENORMAND",
+  "description": "そぼくなドット絵のルノルマンカード占い",
   "lang": "ja",
   "start_url": "./",
   "display": "browser",
