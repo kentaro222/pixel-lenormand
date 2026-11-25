@@ -59,19 +59,45 @@ button.primary{box-shadow:0 3px 0 #d5d9c8}
 @media(max-width:600px){header{padding-top:22px}h1{font-size:21px}.surface{padding:18px;margin-top:18px}#drawn{min-height:210px;padding:20px 6px}nav{width:100%}nav button{flex:1}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 
-/* Keep multi-card draws in one ordered row on phones. */
+/* Keep the same card proportions in every draw. */
 header{padding-top:18px;padding-bottom:16px}
 h1{font-size:22px;letter-spacing:.035em}
-.cardrow{gap:12px}
-#drawn.spread{display:grid;grid-template-columns:repeat(var(--draw-count),minmax(0,1fr));align-items:start}
-.draw-slot{min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+#drawn{--draw-gap:12px;--card-max-width:180px;gap:var(--draw-gap)}
+#drawn.spread{
+ display:grid;
+ grid-template-columns:repeat(var(--draw-count),min(var(--card-max-width),calc((100% - 2 * var(--draw-gap)) / 3)));
+ justify-content:center;
+ align-items:start;
+}
+.draw-slot{container-type:inline-size;width:100%;max-width:var(--card-max-width);min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
 .draw-slot.card-reveal{animation:card-reveal .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--delay)}
 .draw-order{font-size:12px;font-weight:700;color:var(--accent);text-align:center}
-#drawn .card{max-width:100%}
-@media(min-width:601px){
- #drawn.spread .card{width:180px;min-height:250px;aspect-ratio:auto}
- #drawn.spread .sprite{width:100%;max-width:128px;height:auto;aspect-ratio:1;background-size:600% 600%;background-position:calc(var(--col) * 20%) calc(var(--row) * 20%)}
+#drawn .card{
+ width:100%;
+ aspect-ratio:18 / 25;
+ min-height:0;
+ padding:clamp(4px,6.67cqw,12px) clamp(2px,5.56cqw,10px);
+ gap:clamp(2px,3.33cqw,6px);
+ border-width:clamp(3px,3.33cqw,6px);
 }
+#drawn .number{margin:0;font-size:clamp(12px,9.44cqw,17px)}
+#drawn .name{max-width:100%;font-size:clamp(11px,9.44cqw,17px);line-height:1.2;overflow-wrap:anywhere}
+#drawn .en{max-width:100%;font-size:clamp(9px,6.11cqw,11px);line-height:1.2}
+#drawn .symbol{min-height:0;container-type:size}
+#drawn .sprite{
+ width:min(128px,100cqw,100cqh);
+ height:auto;
+ aspect-ratio:1;
+ background-size:600% 600%;
+ background-position:calc(var(--col) * 20%) calc(var(--row) * 20%);
+}
+#drawn .card-back{
+ justify-content:center;
+ color:#eddbad;
+ background:repeating-linear-gradient(45deg,#e5cf9e15 0 1px,transparent 1px 9px),linear-gradient(145deg,#355f48,#233d33);
+}
+.card-back::before{content:"";position:absolute;inset:5%;border:1px solid #d9bc7e99;border-radius:4px}
+.back-glyph{display:grid;place-items:center;width:46%;aspect-ratio:1;border:1px solid #d9bc7e99;border-radius:50%;font-size:clamp(20px,23cqw,42px);line-height:1}
 @keyframes card-reveal{from{opacity:0;transform:translateY(18px) scale(.92) rotateY(45deg)}to{opacity:1;transform:translateY(0) scale(1) rotateY(0)}}
 @media(max-width:600px){
  header,main{padding-left:12px;padding-right:12px}
@@ -83,13 +109,8 @@ h1{font-size:22px;letter-spacing:.035em}
  .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .actions button{min-height:48px;font-weight:700;padding:10px 8px}
  #reset{background:transparent}
- #drawn{margin:18px 0;padding:18px 8px;min-height:220px}
- #drawn.spread{gap:6px;min-height:0}
- #drawn.spread .card{width:100%;border-width:3px;padding:7px 2px;gap:3px;aspect-ratio:auto;min-height:150px}
- #drawn.spread .number{font-size:12px;margin-bottom:0}
- #drawn.spread .name{font-size:11px;letter-spacing:-.03em}
- #drawn.spread .en{font-size:9px;letter-spacing:0}
- #drawn.spread .sprite{width:60px;height:60px;background-size:360px 360px;background-position:calc(var(--col) * -60px) calc(var(--row) * -60px)}
+ #drawn{--draw-gap:6px;margin:18px 0;padding:18px 8px;min-height:220px}
+ #drawn.spread{min-height:0}
  .draw-order{font-size:10px;white-space:nowrap}
  .interpret{padding:12px;font-size:14px}
  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 6px}
@@ -106,12 +127,6 @@ h1{font-size:22px;letter-spacing:.035em}
 #detail-card{display:flex;justify-content:center;margin:20px 0}
 #detail-meaning{text-align:center;line-height:1.8}
 body:has(#card-dialog[open]){overflow:hidden}
-
-/* Give a single card enough room for its artwork and both names. */
-#drawn:not(.spread) .draw-slot{width:180px;max-width:100%}
-#drawn:not(.spread) .card{width:100%;min-height:250px;aspect-ratio:auto;padding:12px 10px;gap:6px}
-#drawn:not(.spread) .sprite{width:128px;height:128px;background-size:768px 768px;background-position:calc(var(--col) * -128px) calc(var(--row) * -128px)}
-#drawn:not(.spread) .en{max-width:100%;overflow-wrap:anywhere;line-height:1.4}
 
 /* Guide styles stay inside the guide panel. */
 #guide{line-height:1.85}
@@ -175,7 +190,7 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
    </div>
    <p class="storage-note" id="storage-note" role="status" hidden>このブラウザでは保存できません。現在のページを開いている間は使えます。</p>
   </form>
-  <div id="drawn" class="cardrow"><div class="muted">「カードを引く」を押してください</div></div>
+  <div id="drawn" class="cardrow"></div>
   <details class="interpret" id="keywords" hidden>
    <summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>
    <div id="keyword-list"></div>
@@ -498,7 +513,6 @@ const form=document.getElementById('draw-form');
 const drawButton=document.getElementById('draw-button');
 const resetButton=document.getElementById('reset');
 const drawn=document.getElementById('drawn');
-const drawEmpty=drawn.firstElementChild;
 const keywords=document.getElementById('keywords');
 const keywordList=document.getElementById('keyword-list');
 const storageNote=document.getElementById('storage-note');
@@ -513,18 +527,16 @@ function syncControls(){
 }
 
 function renderDraw({animate=false}={}){
- drawn.classList.toggle('spread',result!==null && result.length>1);
+ const size=result?.length ?? count;
+ drawn.classList.toggle('spread',size>1);
+ drawn.style.setProperty('--draw-count',size);
+ drawn.innerHTML=Array.from({length:size},(_,i)=>{
+  const card=result ? cardHTML(result[i],false,true) : '<div class="card card-back" aria-hidden="true"><span class="back-glyph">✧</span></div>';
+  return `<div class="draw-slot${animate?' card-reveal':''}" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${card}</div>`;
+ }).join('');
  if(!result || animate) keywords.open=false;
  keywords.hidden=result===null;
- if(!result){
-  drawn.style.removeProperty('--draw-count');
-  drawn.replaceChildren(drawEmpty);
-  keywordList.replaceChildren();
-  return;
- }
- drawn.style.setProperty('--draw-count',result.length);
- drawn.innerHTML=result.map((c,i)=>`<div class="draw-slot${animate?' card-reveal':''}" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');
- keywordList.innerHTML=result.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('');
+ keywordList.innerHTML=(result ?? []).map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('');
 }
 
 function readLastDraw(){
@@ -568,6 +580,7 @@ function restoreLastDraw(){
 
 form.addEventListener('change',()=>{
  count=Number(form.elements.count.value);
+ if(!result)renderDraw();
 });
 form.addEventListener('submit',event=>{
  event.preventDefault();
