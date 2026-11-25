@@ -42,6 +42,19 @@ button.primary{box-shadow:0 3px 0 #d5d9c8}
 .interpret .when-open{display:none}
 .interpret[open] .when-open{display:inline}
 .interpret[open] .when-closed{display:none}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.draw-controls fieldset{min-inline-size:0;margin:0 0 10px;padding:0;border:0}
+.draw-choices{display:flex;flex-wrap:wrap;gap:10px}
+.draw-choice{position:relative;cursor:pointer}
+.draw-choice input{position:absolute;width:1px;height:1px;margin:0;opacity:0}
+.draw-choice span{display:grid;place-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:#eeeadc;color:var(--text)}
+.draw-choice:hover span{background:#e1e6d8;border-color:#8a9b7c}
+.draw-choice input:checked + span{background:var(--accent);color:#fffdf4;border-color:var(--accent);font-weight:700}
+.draw-choice input:focus-visible + span{outline:3px solid var(--gold);outline-offset:4px}
+.draw-controls button:disabled{cursor:default;opacity:.48;box-shadow:none}
+.draw-controls button:disabled:hover{background:#eeeadc;border-color:var(--line);color:var(--text)}
+.storage-note{margin:12px 0 0;font-size:13px}
 
 @media(max-width:600px){header{padding-top:22px}h1{font-size:21px}.surface{padding:18px;margin-top:18px}#drawn{min-height:210px;padding:20px 6px}nav{width:100%}nav button{flex:1}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
@@ -51,7 +64,8 @@ header{padding-top:18px;padding-bottom:16px}
 h1{font-size:22px;letter-spacing:.035em}
 .cardrow{gap:12px}
 #drawn.spread{display:grid;grid-template-columns:repeat(var(--draw-count),minmax(0,1fr));align-items:start}
-.draw-slot{min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px;animation:card-reveal .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--delay)}
+.draw-slot{min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.draw-slot.card-reveal{animation:card-reveal .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--delay)}
 .draw-order{font-size:12px;font-weight:700;color:var(--accent);text-align:center}
 #drawn .card{max-width:100%}
 @media(min-width:601px){
@@ -64,9 +78,11 @@ h1{font-size:22px;letter-spacing:.035em}
  header{gap:12px}h1{font-size:20px;margin:0}
  .surface{padding:14px;margin-top:14px}
  .surface>p{font-size:13px;line-height:1.7}
- .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .draw-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .draw-choice span{min-height:48px;padding-inline:3px;font-size:14px}
+ .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .actions button{min-height:48px;font-weight:700;padding:10px 8px}
- #reset{grid-column:1/-1;min-height:44px;background:transparent}
+ #reset{background:transparent}
  #drawn{margin:18px 0;padding:18px 8px;min-height:220px}
  #drawn.spread{gap:6px;min-height:0}
  #drawn.spread .card{width:100%;border-width:3px;padding:7px 2px;gap:3px;aspect-ratio:auto;min-height:150px}
@@ -81,7 +97,7 @@ h1{font-size:22px;letter-spacing:.035em}
  .card.small .name{font-size:11px}.card.small .en{font-size:9px}
  .card.small .sprite{width:60px;height:60px;background-size:360px 360px;background-position:calc(var(--col) * -60px) calc(var(--row) * -60px)}
 }
-@media(prefers-reduced-motion:reduce){.draw-slot{animation:none}}
+@media(prefers-reduced-motion:reduce){.draw-slot.card-reveal{animation:none}}
 
 #card-dialog{width:min(420px,calc(100% - 32px));max-height:85dvh;overflow:auto;border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:16px;background:var(--panel);color:var(--text);padding:20px;box-shadow:0 16px 60px #0003}
 #card-dialog::backdrop{background:rgba(24,40,30,.5)}
@@ -141,9 +157,37 @@ button.card:hover{background:var(--card);border-color:#6b855d;box-shadow:0 3px 0
 }
 </style></head><body>
 <header><div><h1>PIXEL LENORMAND <small class="version">v2.0</small></h1></div><nav role="tablist" aria-label="アプリの画面"><button id="tab-draw" role="tab" aria-controls="draw" aria-selected="true" tabindex="0" class="active" data-tab="draw">占う</button><button id="tab-library" role="tab" aria-controls="library" aria-selected="false" tabindex="-1" data-tab="library">カード図鑑</button><button id="tab-guide" role="tab" aria-controls="guide" aria-selected="false" tabindex="-1" data-tab="guide">ガイド</button></nav></header>
-<main><section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw"><div class="surface"><div class="actions"><button id="one" aria-pressed="false">1枚引く</button><button id="two" aria-pressed="false">2枚引く</button><button id="three" aria-pressed="false">3枚引く</button><button id="reset">リセット</button></div><div id="drawn" class="cardrow" aria-live="polite"><div class="muted">カードを引くボタンを押してください</div></div><div id="keywords" aria-live="polite"></div></div></section><section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface" id="guide-basics"><h2>身近なことを、カードで占ってみよう</h2>
+<main>
+<section id="draw" class="screen active" role="tabpanel" aria-labelledby="tab-draw">
+ <div class="surface">
+  <form class="draw-controls" id="draw-form">
+   <fieldset>
+    <legend class="sr-only">引く枚数</legend>
+    <div class="draw-choices">
+     <label class="draw-choice"><input type="radio" name="count" value="1" checked><span>1枚引き</span></label>
+     <label class="draw-choice"><input type="radio" name="count" value="2"><span>2枚引き</span></label>
+     <label class="draw-choice"><input type="radio" name="count" value="3"><span>3枚引き</span></label>
+    </div>
+   </fieldset>
+   <div class="actions">
+    <button class="primary" type="submit" id="draw-button">カードを引く</button>
+    <button type="button" id="reset" disabled>リセット</button>
+   </div>
+   <p class="storage-note" id="storage-note" role="status" hidden>このブラウザでは保存できません。現在のページを開いている間は使えます。</p>
+  </form>
+  <div id="drawn" class="cardrow"><div class="muted">「カードを引く」を押してください</div></div>
+  <details class="interpret" id="keywords" hidden>
+   <summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>
+   <div id="keyword-list"></div>
+  </details>
+  <span class="sr-only" id="announcement" role="status"></span>
+ </div>
+</section>
+<section id="library" class="screen" role="tabpanel" aria-labelledby="tab-library" hidden><div class="surface"><h2>カード図鑑</h2><p class="muted">カードをタップすると、キーワードと詳しい意味を読めます。</p><div id="grid" class="grid"></div></div></section><section id="guide" class="screen" role="tabpanel" aria-labelledby="tab-guide" hidden><div class="surface" id="guide-basics"><h2>身近なことを、カードで占ってみよう</h2>
 <p class="guide-lead">どのカードも、あなたの味方です。</p>
-<p>友だちに送るメッセージや、明日の仕事のこと。気になる場面をひとつ思い浮かべて、カードを引いてみましょう。気になる絵が出た日は、「どうしたら少し楽になれるかな？」と考えてみるのもいいですね。質問を決めずに引いたり、絵を眺めるだけで終えたりしても大丈夫です。</p><div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#guide-keywords">何も浮かばないとき</a><a href="#library">36枚の意味を調べる</a></div></div>
+<p>友だちに送るメッセージや、明日の仕事のこと。気になる場面をひとつ思い浮かべて、カードを引いてみましょう。気になる絵が出た日は、「どうしたら少し楽になれるかな？」と考えてみるのもいいですね。質問を決めずに引いたり、絵を眺めるだけで終えたりしても大丈夫です。</p>
+<p>枚数を選んで「カードを引く」を押します。詳しい意味は、カードをタップすると読めます。次に引くときは「リセット」を押します。</p>
+<div class="guide-toc" aria-label="ガイドの目次"><a href="#guide-basics">はじめに</a><a href="#guide-one-card">1枚引き</a><a href="#guide-two-cards">2枚引き</a><a href="#guide-three-cards">3枚引き</a><a href="#guide-keywords">何も浮かばないとき</a><a href="#library">36枚の意味を調べる</a></div></div>
 <section class="panel" id="guide-one-card">
 <h2>1枚で、ひとつのヒント</h2>
 <article class="guide-example">
@@ -449,55 +493,107 @@ function cardHTML(c,small=false,interactive=false){
  const attributes=interactive?`type="button" data-id="${c.id}" aria-haspopup="dialog"`:'';
  return `<${tag} class="card ${small?'small':''} ${interactive?'clickable':''}" ${attributes} aria-label="${c.id} ${c.name}${interactive?'：詳しい意味を見る':''}"><span class="number">${String(c.id).padStart(2,'0')}</span><span class="symbol"><span class="sprite" aria-hidden="true" style="--col:${col};--row:${row}"></span></span><span class="name">${c.name}</span><span class="en">${c.en}</span></${tag}>`;
 }
-const drawn=document.getElementById('drawn'), keywords=document.getElementById('keywords');
-function selectDrawCount(n){
- ['one','two','three'].forEach((id,i)=>{
-  const button=document.getElementById(id), selected=i+1===n;
-  button.classList.toggle('primary',selected);
-  button.setAttribute('aria-pressed',String(selected));
- });
-}
 const lastDrawKey='pixel-lenormand:last-draw';
-function renderDraw(chosen){
- const n=chosen.length;
- selectDrawCount(n);
- drawn.classList.toggle('spread',n>1);
- drawn.style.setProperty('--draw-count',n);
- drawn.innerHTML=chosen.map((c,i)=>`<div class="draw-slot" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');
- keywords.innerHTML='<details class="interpret"><summary>カードのキーワード<span class="when-closed">を見る</span><span class="when-open">を閉じる</span></summary>'+chosen.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('')+'</details>';
+const form=document.getElementById('draw-form');
+const drawButton=document.getElementById('draw-button');
+const resetButton=document.getElementById('reset');
+const drawn=document.getElementById('drawn');
+const drawEmpty=drawn.firstElementChild;
+const keywords=document.getElementById('keywords');
+const keywordList=document.getElementById('keyword-list');
+const storageNote=document.getElementById('storage-note');
+const announcement=document.getElementById('announcement');
+let count=1;
+let result=null;
+
+function syncControls(){
+ form.elements.count.value=String(count);
+ drawButton.disabled=result!==null;
+ resetButton.disabled=result===null;
 }
-function draw(n){
- const ids=rows.map(c=>c.id);
- for(let i=ids.length-1;i>0;i--){
-  const arr=new Uint32Array(1);crypto.getRandomValues(arr);
-  const j=arr[0]%(i+1);[ids[i],ids[j]]=[ids[j],ids[i]];
+
+function renderDraw({animate=false}={}){
+ drawn.classList.toggle('spread',result!==null && result.length>1);
+ if(!result || animate) keywords.open=false;
+ keywords.hidden=result===null;
+ if(!result){
+  drawn.style.removeProperty('--draw-count');
+  drawn.replaceChildren(drawEmpty);
+  keywordList.replaceChildren();
+  return;
  }
- const cardIds=ids.slice(0,n);
- renderDraw(cardIds.map(byId));
- // Storage may be unavailable or full; drawing must still work.
- try{localStorage.setItem(lastDrawKey,JSON.stringify({version:1,cardIds}));}catch{}
+ drawn.style.setProperty('--draw-count',result.length);
+ drawn.innerHTML=result.map((c,i)=>`<div class="draw-slot${animate?' card-reveal':''}" style="--delay:${i*160}ms"><div class="draw-order">${i+1}枚目</div>${cardHTML(c,false,true)}</div>`).join('');
+ keywordList.innerHTML=result.map((c,i)=>`<p>${i+1}枚目 · ${c.name}：${c.meaning}</p>`).join('');
 }
-function restoreLastDraw(){
+
+function readLastDraw(){
+ let raw;
  try{
-  const saved=JSON.parse(localStorage.getItem(lastDrawKey));
-  if(saved?.version!==1 || !Array.isArray(saved.cardIds))return;
+  raw=localStorage.getItem(lastDrawKey);
+ }catch{
+  storageNote.hidden=false;
+  return result;
+ }
+ try{
+  const saved=JSON.parse(raw);
+  if(saved?.version!==1 || !Array.isArray(saved.cardIds))return null;
   const ids=saved.cardIds;
-  if(ids.length<1 || ids.length>3 || new Set(ids).size!==ids.length)return;
-  if(!ids.every(id=>Number.isInteger(id) && byId(id)))return;
-  renderDraw(ids.map(byId));
- }catch{}
+  if(ids.length<1 || ids.length>3 || new Set(ids).size!==ids.length)return null;
+  if(!ids.every(id=>Number.isInteger(id) && byId(id)))return null;
+  return ids.map(byId);
+ }catch{
+  return null;
+ }
 }
-document.getElementById('one').onclick=()=>draw(1);
-document.getElementById('two').onclick=()=>draw(2);
-document.getElementById('three').onclick=()=>draw(3);
-document.getElementById('reset').onclick=()=>{
- selectDrawCount(null);
- keywords.innerHTML='';
- drawn.classList.remove('spread');
- drawn.style.removeProperty('--draw-count');
- drawn.innerHTML='<div class="muted">カードを引くボタンを押してください</div>';
- try{localStorage.removeItem(lastDrawKey);}catch{}
-};
+
+function saveLastDraw(){
+ try{
+  if(result){
+   localStorage.setItem(lastDrawKey,JSON.stringify({version:1,cardIds:result.map(card=>card.id)}));
+  }else{
+   localStorage.removeItem(lastDrawKey);
+  }
+ }catch{
+  storageNote.hidden=false;
+ }
+}
+
+function restoreLastDraw(){
+ result=readLastDraw();
+ count=result?.length ?? count;
+ syncControls();
+ renderDraw();
+}
+
+form.addEventListener('change',()=>{
+ count=Number(form.elements.count.value);
+});
+form.addEventListener('submit',event=>{
+ event.preventDefault();
+ if(result)return;
+ const ids=rows.map(c=>c.id);
+ const random=new Uint32Array(1);
+ for(let i=ids.length-1;i>0;i--){
+  crypto.getRandomValues(random);
+  const j=random[0]%(i+1);
+  [ids[i],ids[j]]=[ids[j],ids[i]];
+ }
+ result=ids.slice(0,count).map(byId);
+ saveLastDraw();
+ syncControls();
+ renderDraw({animate:true});
+ announcement.textContent='引いたカード。 '+result.map(card=>card.name).join('。');
+});
+resetButton.addEventListener('click',()=>{
+ if(!result)return;
+ result=null;
+ saveLastDraw();
+ syncControls();
+ renderDraw();
+ announcement.textContent='結果をリセットしました。';
+ drawButton.focus();
+});
 const grid=document.getElementById('grid');grid.innerHTML=rows.map(c=>cardHTML(c,true,true)).join('');const cardDialog=document.getElementById('card-dialog');
 function detail(id){const c=byId(+id);document.getElementById('detail-title').textContent=`${String(c.id).padStart(2,'0')}. ${c.name} / ${c.en}`;document.getElementById('detail-card').innerHTML=cardHTML(c);document.getElementById('detail-meaning').textContent=c.meaning;document.getElementById('detail-explanation').textContent=c.explanation;cardDialog.showModal()}
 cardDialog.addEventListener('click',e=>{if(e.target===cardDialog){const r=cardDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)cardDialog.close()}});
@@ -544,6 +640,8 @@ tabs.forEach((tab,index)=>{
 });
 window.addEventListener('hashchange',activateFromHash);
 window.addEventListener('popstate',activateFromHash);
+window.addEventListener('pageshow',event=>{if(event.persisted)restoreLastDraw()});
+window.addEventListener('storage',event=>{if(event.key===lastDrawKey || event.key===null)restoreLastDraw()});
 restoreLastDraw();
 activateFromHash();
 </script></body></html>
